@@ -1,0 +1,9 @@
+{
+  "name_prefix": "zoomjomedia",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/sinavm/SVM/main/lite/subscriptions/singbox/vless.json",
+      "enabled": true
+    }
+  ]
+}
