@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b12">
+  <meta name="description" content="انتخاب کلاینت و باز کردن اشتراک ZoomjoMedia در برنامه دلخواه">
+  <title>ZoomjoMedia — Subscription Hub</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#090b12;--panel:#10141e;--panel2:#141a27;--text:#f5f7fb;--muted:#9ca8bb;
+      --line:rgba(255,255,255,.085);--cyan:#7ce7e1;--blue:#7d8cff;--violet:#b38aff;
+      --green:#6be0ad;--red:#ff879a;--radius:24px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;background:radial-gradient(ellipse at 14% 5%,rgba(65,100,255,.19),transparent 36%),radial-gradient(ellipse at 88% 28%,rgba(88,224,214,.12),transparent 33%),radial-gradient(ellipse at 48% 100%,rgba(129,76,220,.12),transparent 40%)}
+    body:after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 84%)}
+    button,a{font:inherit}button{color:inherit}
+    .orb{position:fixed;z-index:-1;width:300px;height:300px;border-radius:50%;filter:blur(65px);opacity:.14;pointer-events:none;animation:drift 13s ease-in-out infinite alternate}
+    .orb.one{background:#5a70ff;top:15%;left:-130px}.orb.two{background:#57d9d1;bottom:8%;right:-140px;animation-delay:-5s}
+    @keyframes drift{from{transform:translate(0,0) scale(.9)}to{transform:translate(45px,-32px) scale(1.12)}}
+    @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(107,224,173,.24)}50%{box-shadow:0 0 0 7px rgba(107,224,173,0)}}
+    @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+    .wrap{width:min(1080px,calc(100% - 36px));margin:0 auto}
+    header{height:86px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);animation:rise .55s ease both}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+    .brand-mark{width:43px;height:43px;border-radius:15px;display:grid;place-items:center;font-size:14px;font-weight:900;letter-spacing:-1px;color:#09111a;background:linear-gradient(135deg,var(--cyan),#90a3ff 70%,#d5a6ff);box-shadow:0 8px 30px rgba(92,199,220,.18)}
+    .brand-name{font-size:14px;font-weight:800;letter-spacing:.5px}.brand-sub{font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:1.2px;direction:ltr;text-align:right}
+    .live-chip{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.025);font-size:11px;color:#cbd3e0}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+    main{padding:55px 0 36px}
+    .hero{text-align:center;max-width:730px;margin:0 auto 35px;animation:rise .65s .05s ease both}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#b9c4da;font-size:11px;border:1px solid rgba(255,255,255,.1);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.03);margin-bottom:21px}
+    .eyebrow i{display:block;width:6px;height:6px;border-radius:2px;transform:rotate(45deg);background:var(--cyan);box-shadow:0 0 14px var(--cyan)}
+    h1{font-size:clamp(31px,5.5vw,54px);line-height:1.35;letter-spacing:-1.6px;margin:0;font-weight:900}
+    .gradient-text{background:linear-gradient(100deg,#f4f7ff 5%,var(--cyan) 45%,#a7adff 76%,#e0c6ff);background-size:200% auto;color:transparent;background-clip:text;-webkit-background-clip:text;animation:shimmer 8s linear infinite}
+    .hero p{font-size:14px;line-height:2.1;color:var(--muted);max-width:550px;margin:18px auto 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 15px;animation:rise .7s .12s ease both}
+    .section-head h2{font-size:16px;margin:0 0 7px}.section-head p{margin:0;color:var(--muted);font-size:11px;line-height:1.9}
+    .secure-note{display:flex;align-items:center;gap:7px;color:#9ba8bf;font-size:10px;white-space:nowrap}
+    .secure-note svg{width:15px;height:15px;color:var(--cyan)}
+    .cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .client{position:relative;text-align:right;min-height:188px;padding:17px 15px 14px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(155deg,rgba(255,255,255,.055),rgba(255,255,255,.018));cursor:pointer;overflow:hidden;transition:transform .25s ease,border-color .25s ease,background .25s ease,box-shadow .25s ease;animation:rise .65s ease both}
+    .client:nth-child(1){animation-delay:.13s}.client:nth-child(2){animation-delay:.18s}.client:nth-child(3){animation-delay:.23s}.client:nth-child(4){animation-delay:.28s}.client:nth-child(5){animation-delay:.33s}
+    .client:before{content:"";position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 0% 0%,rgba(124,231,225,.15),transparent 58%);transition:opacity .25s}
+    .client:hover,.client:focus-visible{transform:translateY(-5px);border-color:rgba(124,231,225,.45);background:linear-gradient(155deg,rgba(124,231,225,.075),rgba(255,255,255,.025));box-shadow:0 18px 45px rgba(0,0,0,.22);outline:none}
+    .client:hover:before,.client:focus-visible:before{opacity:1}
+    .client.selected{border-color:rgba(124,231,225,.65);box-shadow:0 0 0 1px rgba(124,231,225,.14),0 16px 40px rgba(0,0,0,.2)}
+    .icon-box{position:relative;width:43px;height:43px;border-radius:15px;display:grid;place-items:center;margin-bottom:20px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);font-size:20px;font-weight:900;direction:ltr}
+    .icon-box svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .icon-v2{color:#9eb4ff}.icon-hid{color:#7ce7e1}.icon-sing{color:#f2cb8a}.icon-happ{color:#d5afff}.icon-zed{color:#8de5b5}
+    .client h3{position:relative;margin:0 0 8px;font-size:14px;font-weight:800;direction:ltr;text-align:right}
+    .client p{position:relative;margin:0;color:var(--muted);font-size:10px;line-height:1.8;min-height:36px}
+    .card-foot{position:relative;display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:10px;color:#c7d0df}
+    .arrow{display:inline-grid;place-items:center;width:25px;height:25px;border:1px solid var(--line);border-radius:9px;color:var(--cyan);transition:transform .2s}
+    .client:hover .arrow{transform:translateX(-3px)}
+    .work-area{margin-top:18px;border-radius:24px;border:1px solid var(--line);background:rgba(15,19,29,.74);backdrop-filter:blur(18px);overflow:hidden;animation:rise .7s .35s ease both}
+    .work-top{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 20px;border-bottom:1px solid var(--line)}
+    .work-title{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800}
+    .work-symbol{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:rgba(124,231,225,.09);color:var(--cyan)}
+    .status{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:7px}
+    .status-dot{width:6px;height:6px;background:#66748a;border-radius:50%}.status.loading .status-dot{background:#f2cb8a;animation:pulse 1s infinite}.status.ok .status-dot{background:var(--green)}.status.error .status-dot{background:var(--red)}
+    .work-body{padding:20px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+    .work-copy h3{font-size:14px;margin:0 0 8px}.work-copy p{font-size:11px;line-height:2;color:var(--muted);margin:0;max-width:620px;overflow-wrap:anywhere}
+    .work-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.045);color:#e7edf7;font-size:11px;cursor:pointer;transition:transform .2s,border-color .2s,background .2s;text-decoration:none;white-space:nowrap}
+    .btn:hover{transform:translateY(-2px);border-color:rgba(124,231,225,.35)}.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+    .btn.primary{background:linear-gradient(125deg,#b5fff2,#a5b9ff);color:#081219;border:0;font-weight:900;box-shadow:0 8px 25px rgba(124,231,225,.13)}.btn.primary:hover{box-shadow:0 10px 30px rgba(124,231,225,.2)}
+    .btn[hidden]{display:none!important}
+    .mini{width:15px;height:15px;display:block}
+    .how{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:27px;animation:rise .7s .4s ease both}
+    .step{display:flex;align-items:flex-start;gap:12px;padding:15px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.018)}
+    .step-num{flex:0 0 27px;height:27px;display:grid;place-items:center;border-radius:9px;background:rgba(124,231,225,.08);color:var(--cyan);font-size:11px;font-weight:900}
+    .step b{display:block;font-size:11px;margin:3px 0 7px}.step span{display:block;font-size:10px;line-height:1.9;color:var(--muted)}
+    footer{padding:28px 0 30px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);margin-top:32px;color:#738096;font-size:10px}
+    footer span:last-child{direction:ltr;letter-spacing:.7px}
+    .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;max-width:calc(100% - 28px);padding:12px 16px;background:#1b2533;border:1px solid rgba(124,231,225,.25);border-radius:13px;color:#eff8ff;font-size:11px;line-height:1.8;box-shadow:0 10px 35px rgba(0,0,0,.35);transition:opacity .25s,transform .25s;z-index:20;text-align:center}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.client{min-height:176px}.cards .client:nth-child(4),.cards .client:nth-child(5){min-height:170px}}
+    @media(max-width:600px){.wrap{width:min(100% - 24px,500px)}header{height:72px}.brand-mark{width:38px;height:38px}.live-chip{font-size:9px;padding:8px 9px}main{padding-top:39px}.hero{margin-bottom:31px}.hero p{font-size:12px}.section-head{align-items:flex-start;flex-direction:column;gap:8px}.secure-note{white-space:normal}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.client{padding:14px;min-height:172px;border-radius:19px}.client:last-child{grid-column:1/-1;min-height:145px}.client:last-child .icon-box{margin-bottom:10px}.icon-box{margin-bottom:15px;width:39px;height:39px}.work-top{padding:14px}.work-body{grid-template-columns:1fr;padding:16px;gap:16px}.work-actions{justify-content:stretch}.work-actions .btn{flex:1}.how{grid-template-columns:1fr;gap:8px}.step{padding:13px}footer{font-size:9px;align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <div class="orb one"></div><div class="orb two"></div>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="ZoomjoMedia home">
+        <span class="brand-mark">ZM</span>
+        <span><span class="brand-name">zoomjomedia</span><span class="brand-sub">SUBSCRIPTION HUB</span></span>
+      </a>
+      <div class="live-chip"><span class="live-dot"></span><span>اتصال به مخزن اشتراک</span></div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><i></i> یک انتخاب؛ ادامه با کلاینت خودت</div>
+        <h1>اشتراک مناسب تو،<br><span class="gradient-text">در چند ثانیه آماده است.</span></h1>
+        <p>برنامه‌ات را انتخاب کن. لینک اشتراک بررسی می‌شود و سپس تلاش می‌کنیم آن را مستقیم در همان برنامه باز کنیم.</p>
+      </section>
+
+      <section aria-labelledby="choose-title">
+        <div class="section-head">
+          <div><h2 id="choose-title">از کدام برنامه استفاده می‌کنی؟</h2><p>برای ادامه یکی از کلاینت‌های زیر را انتخاب کن.</p></div>
+          <div class="secure-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 19 6v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg> لینک‌ها از منابع از پیش تنظیم‌شده خوانده می‌شوند</div>
+        </div>
+
+        <div class="cards" role="list">
+          <button class="client" type="button" data-client="v2ray" role="listitem" aria-label="انتخاب V2Ray">
+            <span class="icon-box icon-v2"><svg viewBox="0 0 24 24"><path d="m4 5 8 14 8-14"/><path d="M8 12h8"/></svg></span>
+            <h3>V2Ray / v2rayNG</h3><p>واردکردن اشتراک استاندارد Xray</p>
+            <span class="card-foot"><span>باز کردن برنامه</span><span class="arrow">↙</span></span>
+          </button>
+          <button class="client" type="button" data-client="hiddify" role="listitem" aria-label="انتخاب Hiddify">
+            <span class="icon-box icon-hid"><svg viewBox="0 0 24 24"><path d="M12 3v18M4.5 7.5l15 9M4.5 16.5l15-9"/><circle cx="12" cy="12" r="8.5"/></svg></span>
+            <h3>Hiddify</h3><p>افزودن اشتراک با لینک مستقیم</p>
+            <span class="card-foot"><span>باز کردن برنامه</span><span class="arrow">↙</span></span>
+          </button>
+          <button class="client" type="button" data-client="singbox" role="listitem" aria-label="انتخاب sing-box">
+            <span class="icon-box icon-sing"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M7 9h10M7 12h7M7 15h4"/></svg></span>
+            <h3>sing-box</h3><p>باز کردن پروفایل JSON مخصوص sing-box</p>
+            <span class="card-foot"><span>باز کردن برنامه</span><span class="arrow">↙</span></span>
+          </button>
+          <button class="client" type="button" data-client="happ" role="listitem" aria-label="انتخاب Happ">
+            <span class="icon-box icon-happ"><svg viewBox="0 0 24 24"><path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v7a2.5 2.5 0 0 1-2.5 2.5h-4l-4.5 4v-4A2.5 2.5 0 0 1 5 13.5Z"/><path d="M9 9h6M9 12h4"/></svg></span>
+            <h3>Happ</h3><p>افزودن لینک اشتراک به Happ</p>
+            <span class="card-foot"><span>باز کردن برنامه</span><span class="arrow">↙</span></span>
+          </button>
+          <button class="client" type="button" data-client="zedsecure" role="listitem" aria-label="انتخاب ZedSecure">
+            <span class="icon-box icon-zed"><svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 4.5-3.3 7.5-8 9-4.7-1.5-8-4.5-8-9V7l8-4Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg></span>
+            <h3>ZedSecure</h3><p>کپی اشتراک برای افزودن در برنامه</p>
+            <span class="card-foot"><span>آماده‌سازی لینک</span><span class="arrow">↙</span></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="work-area" aria-live="polite">
+        <div class="work-top">
+          <div class="work-title"><span class="work-symbol"><svg class="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h16M12 4v16"/></svg></span><span id="panel-title">آماده‌ی انتخاب کلاینت</span></div>
+          <div class="status" id="status"><span class="status-dot"></span><span id="status-text">منتظر انتخاب تو</span></div>
+        </div>
+        <div class="work-body">
+          <div class="work-copy"><h3 id="message-title">اول برنامه‌ات را انتخاب کن</h3><p id="message">بعد از انتخاب، لینک بررسی می‌شود و درخواست باز کردن برنامه ارسال خواهد شد. اگر برنامه پشتیبانی از لینک مستقیم نداشته باشد، راه جایگزین نمایش داده می‌شود.</p></div>
+          <div class="work-actions">
+            <button class="btn primary" id="open-btn" type="button" hidden><svg class="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg><span>تلاش دوباره برای باز کردن</span></button>
+            <button class="btn" id="copy-btn" type="button" hidden><svg class="mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span>کپی لینک اشتراک</span></button>
+            <button class="btn" id="web-btn" type="button" hidden>نمایش لینک</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="how" aria-label="مراحل کار">
+        <div class="step"><span class="step-num">01</span><div><b>برنامه را انتخاب کن</b><span>کلاینتی را بزن که روی دستگاهت نصب است.</span></div></div>
+        <div class="step"><span class="step-num">02</span><div><b>لینک بررسی می‌شود</b><span>اگر خروجی در دسترس نباشد، خطا به تو نشان داده می‌شود.</span></div></div>
+        <div class="step"><span class="step-num">03</span><div><b>در برنامه وارد کن</b><span>اگر ورود خودکار پشتیبانی نشود، لینک را کپی و دستی وارد کن.</span></div></div>
+      </section>
+    </main>
+
+    <footer><span>لینک اشتراک را عمومی منتشر نکن؛ هرکس به آن دسترسی داشته باشد ممکن است بتواند از آن استفاده کند.</span><span>ZOOMJOMEDIA · SUBSCRIPTION HUB</span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    'use strict';
+
+    // این لینک‌ها با مخزن فعلی پروژه هماهنگ هستند.
+    const XRAY_SUB_URL = 'https://raw.githubusercontent.com/Z5GIT/amir/main/fast/sub/normal';
+    const SINGBOX_PROFILE_URL = 'https://raw.githubusercontent.com/sinavm/SVM/main/lite/subscriptions/singbox/vless.json';
+    const PROFILE_NAME = 'zoomjomedia';
+
+    const labels = {
+      v2ray: 'V2Ray / v2rayNG',
+      hiddify: 'Hiddify',
+      singbox: 'sing-box',
+      happ: 'Happ',
+      zedsecure: 'ZedSecure'
+    };
+    let selectedClient = null;
+    let currentUrl = XRAY_SUB_URL;
+    let toastTimer = null;
+
+    const statusEl = document.getElementById('status');
+    const statusText = document.getElementById('status-text');
+    const panelTitle = document.getElementById('panel-title');
+    const messageTitle = document.getElementById('message-title');
+    const message = document.getElementById('message');
+    const openBtn = document.getElementById('open-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const webBtn = document.getElementById('web-btn');
+    const toastEl = document.getElementById('toast');
+
+    function setStatus(type, text) {
+      statusEl.className = 'status ' + (type || '');
+      statusText.textContent = text;
+    }
+
+    function notify(text) {
+      toastEl.textContent = text;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const area = document.createElement('textarea');
+          area.value = text;
+          area.setAttribute('readonly', '');
+          area.style.position = 'fixed';
+          area.style.opacity = '0';
+          document.body.appendChild(area);
+          area.select();
+          const ok = document.execCommand('copy');
+          area.remove();
+          if (!ok) throw new Error('copy failed');
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function getSubInfo(client) {
+      const isSingbox = client === 'singbox';
+      const url = isSingbox ? SINGBOX_PROFILE_URL : XRAY_SUB_URL;
+      const response = await fetch(url, { cache: 'no-store', redirect: 'follow' });
+      if (!response.ok) throw new Error('مخزن اشتراک پاسخ مناسب نداد (' + response.status + ').');
+      const text = await response.text();
+      if (!text.trim() || text.includes('Initial placeholder')) throw new Error('فایل اشتراک هنوز تولید نشده است. بعداً دوباره امتحان کن.');
+
+      if (isSingbox) {
+        const start = text.indexOf('{');
+        const end = text.lastIndexOf('}');
+        if (start < 0 || end <= start) throw new Error('پروفایل JSON sing-box معتبر به نظر نمی‌رسد.');
+        let config;
+        try { config = JSON.parse(text.slice(start, end + 1)); }
+        catch (_) { throw new Error('خواندن فایل JSON sing-box ناموفق بود.'); }
+        if (!config || !Array.isArray(config.outbounds)) throw new Error('پروفایل sing-box بخش outbounds ندارد.');
+        const count = config.outbounds.filter(item => item && item.type === 'vless').length;
+        if (!count) throw new Error('در پروفایل sing-box هیچ خروجی VLESS پیدا نشد.');
+        return { url, count, kind: 'singbox' };
+      }
+
+      let decoded;
+      try { decoded = atob(text.trim().replace(/\s/g, '')); }
+      catch (_) { throw new Error('محتوای اشتراک Base64 معتبر نیست.'); }
+      if (!decoded.toLowerCase().includes('vless://')) throw new Error('در اشتراک هیچ لینک VLESS پیدا نشد.');
+      const count = (decoded.match(/vless:\/\//gi) || []).length;
+      return { url, count, kind: 'xray' };
+    }
+
+    function buildDeepLink(client, url) {
+      const encoded = encodeURIComponent(url);
+      if (client === 'v2ray') return 'v2rayng://install-sub?url=' + encoded;
+      if (client === 'hiddify') return 'hiddify://import/' + url + '#' + encodeURIComponent(PROFILE_NAME);
+      if (client === 'singbox') return 'sing-box://import-remote-profile?url=' + encoded + '#' + encodeURIComponent(PROFILE_NAME);
+      // Happ's deep-link form can vary by app/version. The link is copied first as fallback.
+      if (client === 'happ') return 'happ://add/' + encoded;
+      return null; // No verified public import URL scheme is configured for ZedSecure.
+    }
+
+    async function selectClient(client) {
+      selectedClient = client;
+      document.querySelectorAll('.client').forEach(card => {
+        const active = card.dataset.client === client;
+        card.classList.toggle('selected', active);
+        card.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      currentUrl = client === 'singbox' ? SINGBOX_PROFILE_URL : XRAY_SUB_URL;
+      panelTitle.textContent = labels[client];
+      messageTitle.textContent = 'در حال بررسی اشتراک…';
+      message.textContent = 'لینک منبع بررسی می‌شود تا مطمئن شویم فایل در دسترس و از فرمت مورد انتظار است.';
+      setStatus('loading', 'در حال بررسی');
+      openBtn.hidden = true;
+      copyBtn.hidden = true;
+      webBtn.hidden = true;
+
+      try {
+        const info = await getSubInfo(client);
+        currentUrl = info.url;
+        setStatus('ok', 'لینک در دسترس است');
+        openBtn.hidden = client === 'zedsecure';
+        copyBtn.hidden = false;
+        webBtn.hidden = false;
+
+        if (client === 'singbox') {
+          messageTitle.textContent = 'پروفایل sing-box آماده‌ی باز کردن است';
+          message.textContent = 'یک پروفایل JSON معتبر با ' + info.count + ' خروجی VLESS پیدا شد. این فایل از منبع sing-box تنظیم‌شده خوانده می‌شود.';
+        } else {
+          messageTitle.textContent = 'اشتراک آماده‌ی وارد کردن است';
+          message.textContent = 'اشتراک در دسترس است و ' + info.count + ' لینک VLESS دارد. تلاش می‌کنیم آن را با ' + labels[client] + ' باز کنیم.';
+        }
+
+        const copied = await copyText(currentUrl);
+        if (client === 'zedsecure') {
+          setStatus('ok', copied ? 'لینک کپی شد' : 'لینک آماده است');
+          messageTitle.textContent = 'لینک برای ZedSecure آماده است';
+          message.textContent = copied
+            ? 'لینک اشتراک کپی شد. ZedSecure را باز کن و از بخش Subscription / Add subscription آن را وارد کن. برای این برنامه، طرح لینک مستقیمِ تأییدشده‌ای تنظیم نشده است.'
+            : 'دکمهٔ «کپی لینک اشتراک» را بزن، سپس در ZedSecure از بخش Subscription / Add subscription لینک را وارد کن.';
+          notify(copied ? 'لینک اشتراک کپی شد؛ حالا آن را در ZedSecure وارد کن.' : 'لینک آماده است؛ دکمهٔ کپی را بزن.');
+          return;
+        }
+
+        const deepLink = buildDeepLink(client, currentUrl);
+        if (deepLink) {
+          message.textContent += copied ? ' لینک هم برای استفاده‌ی دستی کپی شده است.' : ' اگر برنامه باز نشد، از دکمهٔ کپی استفاده کن.';
+          // Navigation is initiated directly from the user's selection flow.
+          window.location.href = deepLink;
+          notify('درخواست باز کردن ' + labels[client] + ' ارسال شد. اگر باز نشد، لینک کپی‌شده را وارد کن.');
+        }
+      } catch (error) {
+        setStatus('error', 'بررسی ناموفق بود');
+        messageTitle.textContent = 'اشتراک قابل تأیید نیست';
+        message.textContent = error && error.message ? error.message : 'خطای ناشناخته‌ای رخ داد. اتصال اینترنت و فایل منبع را بررسی کن.';
+        copyBtn.hidden = true;
+        webBtn.hidden = true;
+        openBtn.hidden = true;
+      }
+    }
+
+    document.querySelectorAll('.client').forEach(card => {
+      card.addEventListener('click', () => selectClient(card.dataset.client));
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (!currentUrl) return;
+      const ok = await copyText(currentUrl);
+      notify(ok ? 'لینک اشتراک کپی شد.' : 'کپی خودکار انجام نشد؛ لینک را از دکمهٔ «نمایش لینک» باز کن.');
+    });
+
+    webBtn.addEventListener('click', () => {
+      if (currentUrl) window.open(currentUrl, '_blank', 'noopener,noreferrer');
+    });
+
+    openBtn.addEventListener('click', () => {
+      if (!selectedClient || !currentUrl) return;
+      const deepLink = buildDeepLink(selectedClient, currentUrl);
+      if (deepLink) window.location.href = deepLink;
+    });
+  </script>
+</body>
+</html>
